@@ -1,0 +1,7 @@
+# data folder
+data/
+
+# mva files
+*.mva
+
+*.asv
