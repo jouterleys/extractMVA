@@ -38,17 +38,17 @@ fileName = 'C:\local_repos\github\mvaExtract\data\xk adidas ub 10.mva';
 
 readData = fileread(fileName);
 % file name
-expression = 'file name:\s\s(.*?)\t';
+expression = 'file name:\s*(.*?)\t';
 fName = regexp(readData, expression, 'tokens');
 outputData.fName = fName{:}{:};
 
 % date/time
-expression = 'date/time\s\s(.*?)\n';
+expression = 'date/time\s*(.*?)\n';
 dateTime = regexp(readData, expression, 'tokens');
 outputData.dateTime = dateTime{:}{:};
 
 % sensor type
-expression = 'sensor type:\s\s(.*?)\n';
+expression = 'sensor type:\s*(.*?)\n';
 sensorType = regexp(readData, expression, 'tokens');
 outputData.sensorType = sensorType{:}{:};
 
@@ -67,11 +67,16 @@ expression = 'scanning rate [Hz\S:(.*?)\n';
 frameRate = regexp(readData, expression, 'tokens');
 outputData.frameRate = str2double(frameRate{:}{:});
 
+% units of pressure
+expression = 'pressure values in\s*(.*?)\n';
+units = regexp(readData, expression, 'tokens');
+outputData.units = units{:}{:};
+
 % mask definitions(segments)
 expression = 'mask definition:\s\n(.*?)\n\n';
 maskTemp = regexp(readData, expression, 'tokens');
 expression = '(\w*):';
-maskNames = regexp(maskTemp{1, 1}{1, 1}  , expression, 'tokens');
+maskNames = regexp(maskTemp{:}{:}  , expression, 'tokens');
 outputData.maskNames = [maskNames{:}]';
 
 % column names
@@ -88,9 +93,9 @@ outputData.numRows = length(outputData.timePerFrame:(1/outputData.frameRate):out
 expression = '\n(time(.*))';
 dat = regexp(readData, expression, 'tokens');
 expression = '\n(.*)';
-dat = regexp(dat{1, 1}{1, 1}  , expression, 'tokens');
+dat = regexp(dat{:}{:}, expression, 'tokens');
 dat = textscan(dat{:}{:},'%f','Delimiter', '\t');
-dat = reshape(dat{1, 1}  ,outputData.numColumns, outputData.numRows)';
+dat = reshape(dat{1, 1},outputData.numColumns, outputData.numRows)';
 outputData.dat = dat;
 
 
