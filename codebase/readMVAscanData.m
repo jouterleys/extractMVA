@@ -1,4 +1,6 @@
-function [ outputData ] = readLscanData( fileName )
+clear all
+clc
+%function [ outputData ] = readLscanData( fileName )
 fileName = 'C:\local_repos\github\mvaExtract\data\xk adidas ub 10.mva';
 %READLSCANDATA Reads Pedar data exported in *.lst file format.
 %
@@ -35,47 +37,67 @@ fileName = 'C:\local_repos\github\mvaExtract\data\xk adidas ub 10.mva';
 %   https://github.com/GallVp/footPress
 
 readData = fileread(fileName);
-% Get original FileName - this is hardcoded as output from pedar
-% software and is not used at the moment
+% file name
 expression = 'file name:\s\s(.*?)\t';
 fName = regexp(readData, expression, 'tokens');
 outputData.fName = fName{:}{:};
 
-% Get original FileName - this is hardcoded as output from pedar
-% software and is not used at the moment
+% date/time
 expression = 'date/time\s\s(.*?)\n';
 dateTime = regexp(readData, expression, 'tokens');
 outputData.dateTime = dateTime{:}{:};
 
-% Get original FileName - this is hardcoded as output from pedar
-% software and is not used at the moment
+% sensor type
 expression = 'sensor type:\s\s(.*?)\n';
 sensorType = regexp(readData, expression, 'tokens');
 outputData.sensorType = sensorType{:}{:};
 
-% Get original FileName - this is hardcoded as output from pedar
-% software and is not used at the moment
+% total time [secs]
 expression = 'total time [secs\S:(.*?)\t';
 totalTime = regexp(readData, expression, 'tokens');
 outputData.totalTime = str2double(totalTime{:}{:});
 
-% Get original FileName - this is hardcoded as output from pedar
-% software and is not used at the moment
+% time per frame [secs]
 expression = 'time per frame [secs\S:(.*?)\t';
 timePerFrame = regexp(readData, expression, 'tokens');
 outputData.timePerFrame = str2double(timePerFrame{:}{:});
 
-% Get original FileName - this is hardcoded as output from pedar
-% software and is not used at the moment
+% scanning rate [Hz]
 expression = 'scanning rate [Hz\S:(.*?)\n';
 frameRate = regexp(readData, expression, 'tokens');
 outputData.frameRate = str2double(frameRate{:}{:});
 
-
-% Get original FileName - this is hardcoded as output from pedar
-% software and is not used at the moment
+% mask definitions(segments)
 expression = 'mask definition:\s\n(.*?)\n\n';
 maskTemp = regexp(readData, expression, 'tokens');
-expression = '(\w*:)';
+expression = '(\w*):';
 maskNames = regexp(maskTemp{1, 1}{1, 1}  , expression, 'tokens');
-outputData.maskNames = str2double(maskNames{:}{:});
+outputData.maskNames = [maskNames{:}]';
+
+% column names
+expression = '\n(time(.*?))\n';
+colNames = regexp(readData, expression, 'tokens');
+colNames = textscan(colNames{:}{:},'%s','Delimiter', '\t');
+outputData.colNames = [colNames{:}];
+% number of columns (including time)
+outputData.numColumns = length([colNames{:}]);
+% number of rows
+outputData.numRows = length(outputData.timePerFrame:(1/outputData.frameRate):outputData.totalTime);
+
+% data matrix (first column is time)
+expression = '\n(time(.*))';
+dat = regexp(readData, expression, 'tokens');
+expression = '\n(.*)';
+dat = regexp(dat{1, 1}{1, 1}  , expression, 'tokens');
+dat = textscan(dat{:}{:},'%f','Delimiter', '\t');
+dat = reshape(dat{1, 1}  ,outputData.numColumns, outputData.numRows)';
+outputData.dat = dat;
+
+
+
+
+
+
+
+
+
