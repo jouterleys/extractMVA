@@ -1,46 +1,42 @@
-clear all
-clc
-%function [ outputData ] = readLscanData( fileName )
-fileName = 'C:\local_repos\github\mvaExtract\data\xk adidas ub 10.mva';
-%READLSCANDATA Reads Pedar data exported in *.lst file format.
-%
-%   Inputs:
-%   fileName: Name of the file to read data from
-  
-%   Outputs:
-%   outputData is a structure with following fields:
-%       a. startFrame is the starting frame number.
-%       b. endFrame is the ending frame number.
-%       c. fName is the file name found inside lst file.
-%       d. numRows is the number of rows of sensors.
-%       e. numColumns is the number of columns of sensors.
-%       f. units is the units of pressure.
-%       g. frameRate is the frame rate.
-%       h. rowSpacingUnits is the units of row spacing.
-%       i. colSpacingUnits is the units of column spacing.
-%       j. rowSpacing is spacing (in meters) betweeen the sensors
-%          across rows.
-%       k. colSpacing is spacing (in meters) betweeen the sensors 
-%          across columns.
-%       l. comments is the filename of lst file loaded.
-%       m. frames is a 3-D matrix, with rows, cols for sensor
-%          values and the third dimension for frames.
-%       n. timeVect is a vector representing time points for the 
-%          frames (in seconds).
-%
-%
-%   Copyright (c) <2020> <Jereme Outerleys>
-%   Licensed under the MIT License. See LICENSE in the project
-%   root for license information.
-%
-%   Made for use with the footPress toolbox created by Usman Rashid.
-%   https://github.com/GallVp/footPress
+function [ outputData ] = readMVAscan( fileName )
+% readMVAscan Reads summarized Pedar data exported in *.mva file format.
+% 
+% Inputs: fileName: full file name (including path) of the file to read
+% data from
+% 
+% Outputs: outputData is a structure with following fields:
+% a. fName is the .sol file name found inside mva file.
+% b. saved name is mva filename.
+% c. date/time is the date and time found inside mva file.
+% d. sensor type found inside mva file. e. total time is total duration of
+% collected data [sec].
+% f. time per frame of data collected.
+% g. frameRate or scanning rate is the sampling frequency of the sensors
+% [Hz].
+% h. units are the pressure units reported.
+% i. maskNames are the segment names the foot was divided into.
+% j. colNames are the names of the columns as found in the mva file.
+% k. numColumns is the total number of columns including time. Should be
+% the number of segments times the number of metrics reported for each
+% (i.e. force, max pressure, mean pressure, +-% of mean), plus 1 for time.
+% l. numRows is the total number of rows of data. assumped to be length of
+% data collected times the frame rate. m. dat is a 2D matrix containing all
+% the numerical data for the metrics reported (i.e. force, max pressure,
+% mean pressure, +-% of mean)
+    
+% Copyright (c) <2020> <Jereme Outerleys> Licensed under the MIT License.
+% See LICENSE in the project root for license information.
 
 readData = fileread(fileName);
+
 % file name
 expression = 'file name:\s*(.*?)\t';
 fName = regexp(readData, expression, 'tokens');
 outputData.fName = fName{:}{:};
+
+% saved name
+[~,mvaName,mvaExt] = fileparts(fileName);
+outputData.mvaName = [mvaName,mvaExt];
 
 % date/time
 expression = 'date/time\s*(.*?)\n';
@@ -97,7 +93,6 @@ dat = regexp(dat{:}{:}, expression, 'tokens');
 dat = textscan(dat{:}{:},'%f','Delimiter', '\t');
 dat = reshape(dat{1, 1},outputData.numColumns, outputData.numRows)';
 outputData.dat = dat;
-
 
 
 

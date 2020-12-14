@@ -3,7 +3,6 @@ function plotMVAraw(outputData)
 segNames = outputData.maskNames;
 colNames = outputData.colNames;
 
-close all
 figRaw = figure('name','mvaRaw','Renderer', 'painters', 'Position', [500 200 1200 800]);
 set(figRaw,'DefaultAxesFontName','Times New Roman')
 set(figRaw,'DefaultAxesFontSize',20)
@@ -25,7 +24,7 @@ hold on
 for i = 1:length(ind)
     plot(outputData.dat(:,1),outputData.dat(:,ind(i)),'DisplayName',segNames{i})
 end
-ylabel('kPA')
+ylabel(outputData.units)
 title('Max Pressure')
 
 nexttile
@@ -34,7 +33,7 @@ hold on
 for i = 1:length(ind)
     plot(outputData.dat(:,1),outputData.dat(:,ind(i)),'DisplayName',segNames{i})
 end
-ylabel('kPA')
+ylabel(outputData.units)
 xlabel('Time(s)')
 title('Mean Pressure')
 
