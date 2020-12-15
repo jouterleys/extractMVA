@@ -16,6 +16,6 @@ function extractMVA
 fprintf('\nLoaded %s ...\n\n',fn);
 outputData = readMVA(fullfile(fpath,fn));
 plotMVAraw (outputData)
-outputData = stanceMVA(outputData,0);
+outputData = stanceMVA(outputData,1);
 outputData = cutMVA(outputData);
 assignin('base','outputData',outputData)
