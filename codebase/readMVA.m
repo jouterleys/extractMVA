@@ -1,5 +1,5 @@
-function [ outputData ] = readMVAscan( fileName )
-% readMVAscan Reads summarized Pedar data exported in *.mva file format.
+function [ outputData ] = readMVA( fileName )
+% readMVA Reads summarized Pedar data exported in *.mva file format.
 % 
 % Inputs: fileName: full file name (including path) of the file to read
 % data from

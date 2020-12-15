@@ -1,5 +1,5 @@
-function [stance_start,stance_end] = MVAstance(outputData,visualise)
-% MVAstance identifies start and end of stance phases.
+function [outputData] = stanceMVA(outputData,visualise)
+% stanceMVA identifies start and end of stance phases.
 % 
 % The assumption is made that a force column named 'all' is present and
 % that it is the combined force of all segments that the pedar insole has
@@ -12,9 +12,8 @@ function [stance_start,stance_end] = MVAstance(outputData,visualise)
 %   estimated events.
 % 
 % Outputs:
-% stance_start - frame indicies for stance start events.
-% stance_end - frame indicies for stance end events.
-
+%   events - first column are the frames for start of stance and the second
+%   column is the frames for end of stance. Each row is a stance.
 
 % Copyright (c) <2020> <Jereme Outerleys> Licensed under the MIT License.
 % See LICENSE in the project root for license information.
@@ -64,6 +63,8 @@ end
 if length(stance_start) > length(stance_end)
     stance_start(end) = [];
 end
+
+outputData.events = [stance_start stance_end ];
 
 %% visualise
 if visualise == 1
