@@ -7,7 +7,7 @@ Clone the git repository using git. Or, download a compressed copy [here](https:
 ## How to use
 1. Double click the extractMVA.m file from the mvaExtract folder. This will open up MATLAB with the current directory being the mvaExtract folder. If not change directory to the mvaExtract folder (i.e. cd "path to mvaExtract").
 2. Type **extractMVA** in the MATLAB command window and hit enter to run.
-3. Select file to analyze.
+3. Select file to analyze. Sample data is contained in the data.zip file (must be unzipped first).
 ## Outputs
 The toolbox creates a matfile in the Workspace that contains all the information from .mva file. It also separates the segments contained in the .mva file and parses and normalizes to stance phase.
 
