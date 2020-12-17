@@ -12,6 +12,9 @@ function extractMVA
 % Copyright (c) <2020> <Jereme Outerleys> Licensed under the MIT License.
 % See LICENSE in the project root for license information.
 
+% Include sub folders
+addpath('codebase');
+
 [fn,fpath] = uigetfile ('*.mva');
 fprintf('\nLoaded %s ...\n\n',fn);
 outputData = readMVA(fullfile(fpath,fn));
