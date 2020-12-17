@@ -1,4 +1,4 @@
-function tnDat = tnorm(inDat, npts)
+function tnDat = tnorm(inDat,npts,type)
 
 % Scripts Developed by Jereme Outerleys, April 2020
 
@@ -11,10 +11,12 @@ function tnDat = tnorm(inDat, npts)
 x1 = (1:nframes)';
 x2 = (linspace(1, nframes, npts))';
 
-
-for i=1:ncols
-   %tnDat(:,i)=spline(x1,inDat(:,i),x2)';
-   
-   tnDat(:,i)=interp1(x1,inDat(:,i),x2)';
-
+if strcmp(type, 'linear')
+    for i=1:ncols       
+        tnDat(:,i)=interp1(x1,inDat(:,i),x2)';
+    end
+elseif strcmp(type, 'cubic')
+    for i=1:ncols
+        tnDat(:,i)=spline(x1,inDat(:,i),x2)';        
+    end
 end

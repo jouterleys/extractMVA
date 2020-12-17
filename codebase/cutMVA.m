@@ -30,7 +30,7 @@ x = (0:1:eLengths-1)';
 
 for k = 1:length(events)
     outputData.stance{k,1} = dat(events(k,1):events(k,2),:);
-    outputData.norm{k,1} = [x,tnorm(outputData.stance{k,1}(:,2:end),eLengths)];
+    outputData.norm{k,1} = [x,tnorm(outputData.stance{k,1}(:,2:end),eLengths,'linear')];
 end
 
 for i = 1:length(segments)
@@ -40,7 +40,7 @@ for i = 1:length(segments)
             outputData.(segments{i}).(genvarname(met{j})).stance{k,1} = outputData.stance{k,1}(:,ind(i));
             outputData.(segments{i}).(genvarname(met{j})).norm(:,k) = outputData.norm{k,1}(:,ind(i));
         end
-        outputData.(segments{i}).(genvarname(met{j})).mean = tnorm(mean(outputData.(segments{i}).(genvarname(met{j})).norm,2),101);
+        outputData.(segments{i}).(genvarname(met{j})).mean = tnorm(mean(outputData.(segments{i}).(genvarname(met{j})).norm,2),101,'linear');
     end
 end
 
