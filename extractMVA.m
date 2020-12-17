@@ -20,5 +20,5 @@ fprintf('\nLoaded %s ...\n\n',fn);
 outputData = readMVA(fullfile(fpath,fn));
 plotMVAraw (outputData)
 outputData = stanceMVA(outputData,1);
-outputData = cutMVA(outputData);
+outputData = cutMVA(outputData,1);
 assignin('base','outputData',outputData)

@@ -1,15 +1,15 @@
-function outputData = cutMVA(outputData)
+function outputData = cutMVA(outputData,visualise)
 % cutMVA parses data out per stance phase and normalizes.
-% 
+%
 % The dat matrix is first cut using the events identified by stanceMVA and also
 % normalized to the longest stance length for now.
-% 
+%
 % The dat matrix is then parsed by segment, metric (force, max pressure,
 % mean pressure, for now) and then by stance phase.
 %
 % Inputs:
 %   outputData -  from readMVAscan.m
-% 
+%
 % Outputs:
 %   stance - raw dat parsed by stance phase.
 %   norm - raw data normalized to a consistent length.
@@ -40,5 +40,37 @@ for i = 1:length(segments)
             outputData.(segments{i}).(genvarname(met{j})).stance{k,1} = outputData.stance{k,1}(:,ind(i));
             outputData.(segments{i}).(genvarname(met{j})).norm(:,k) = outputData.norm{k,1}(:,ind(i));
         end
+        outputData.(segments{i}).(genvarname(met{j})).mean = tnorm(mean(outputData.(segments{i}).(genvarname(met{j})).norm,2),101);
     end
 end
+
+if visualise == 1
+    figRaw = figure('name','meanWaveforms','Renderer', 'painters', 'Position', [0 0 800 800]);
+    set(figRaw,'DefaultAxesFontName','Times New Roman')
+    set(figRaw,'DefaultAxesFontSize',20)
+    for j = 1:length(met)
+        subplot(length(met),1,j)
+        hold on
+        for i = 1:length(segments)
+            xVec = 0:1:length(outputData.(segments{i}).(genvarname(met{j})).mean)-1;
+            plot(xVec,outputData.(segments{i}).(genvarname(met{j})).mean,'DisplayName',segments{i})
+            maxlim(i) = max(outputData.(segments{i}).(genvarname(met{j})).mean);
+        end
+        maxlim = (round( max(maxlim) / 100 )+1)*100;
+        ylim([0 maxlim])
+        title(met{j})
+        if contains(met{j},'force')
+            ylabel('N')
+        elseif contains(met{j},'pressure')
+            ylabel(outputData.units)
+        end
+        if j==length(met)
+            xlabel("% Stance")
+        end
+    end
+    legend('Location','northeast');
+    set(findobj(gcf,'type','line'),'LineWidth', 1.5);
+    set(findobj(gcf,'type','axes'),'FontWeight','Bold')
+end
+    
+    

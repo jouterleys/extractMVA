@@ -13,5 +13,8 @@ x2 = (linspace(1, nframes, npts))';
 
 
 for i=1:ncols
-   tnDat(:,i)=spline(x1,inDat(:,i),x2)';
+   %tnDat(:,i)=spline(x1,inDat(:,i),x2)';
+   
+   tnDat(:,i)=interp1(x1,inDat(:,i),x2)';
+
 end

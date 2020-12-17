@@ -14,4 +14,5 @@ The toolbox creates a matfile in the Workspace that contains all the information
 ## Normalization
 Data is normalized to the longest stance phase in the data file. The length of stance when the sampling frequency is only 50 Hz is generally less that 20 frames, therefore interpolating to 101 points adds a lot of estimated data and creates issues at the edge points.
 Normalization is most useful for ensemble averaging which can only be performed when all trials are the same length.
-The ensemble averaged wave form can be resampled to 101 if necessary.
+However, the .mean field within each metric (force, max pressure, etc.) for each segment is upsampled to 101 points for comparison to other data normalized to this length
+Note: If discrete metrics are going to be extracted they should be done on the .raw fields.
