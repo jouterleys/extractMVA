@@ -1,4 +1,4 @@
-# mvaExtract
+# extractMVA
 
 ## Overview
 The main features of this toolbox are to import and package Pedar data from *.mva files.
