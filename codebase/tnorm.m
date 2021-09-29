@@ -1,8 +1,5 @@
 function tnDat = tnorm(inDat,npts,type)
 
-% Scripts Developed by Jereme Outerleys, April 2020
-
-
 %   Copyright (c) <2020> <Jereme Outerleys>
 %   Licensed under the MIT License. See LICENSE in the project
 %   root for license information.

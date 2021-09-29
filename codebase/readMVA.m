@@ -8,11 +8,10 @@ function [ outputData ] = readMVA( fileName )
 % a. fName is the .sol file name found inside mva file.
 % b. saved name is mva filename.
 % c. date/time is the date and time found inside mva file.
-% d. sensor type found inside mva file. e. total time is total duration of
-% collected data [sec].
+% d. sensor type found inside mva file.
+% e. total time is total duration of collected data [sec].
 % f. time per frame of data collected.
-% g. frameRate or scanning rate is the sampling frequency of the sensors
-% [Hz].
+% g. frameRate or scanning rate is the sampling frequency of the sensors[Hz].
 % h. units are the pressure units reported.
 % i. maskNames are the segment names the foot was divided into.
 % j. colNames are the names of the columns as found in the mva file.
@@ -20,10 +19,14 @@ function [ outputData ] = readMVA( fileName )
 % the number of segments times the number of metrics reported for each
 % (i.e. force, max pressure, mean pressure, +-% of mean), plus 1 for time.
 % l. numRows is the total number of rows of data. assumped to be length of
-% data collected times the frame rate. m. dat is a 2D matrix containing all
+% data collected times the frame rate.
+% m. dat is a 2D matrix containing all
 % the numerical data for the metrics reported (i.e. force, max pressure,
 % mean pressure, +-% of mean)
-    
+
+% Heavily inspired by the awesome footpress toolbox by Usman Rashid. See
+% https://github.com/GallVp/footPress
+
 % Copyright (c) <2020> <Jereme Outerleys> Licensed under the MIT License.
 % See LICENSE in the project root for license information.
 
